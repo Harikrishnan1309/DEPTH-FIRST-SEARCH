@@ -69,37 +69,48 @@ Now, Queue becomes empty, So, terminate these process of iteration.
 </ol>
 
 <hr>
-<h3>Program </h3>h3>
+<h3>Program</h3>
 
-```
+```python
+
 from collections import deque
 from collections import defaultdict
-def bfs(graph,start,visited,path):
+def bfs(graph, start, visited, path):
     queue = deque()
-    path.append(start)
-    queue.append(start)
     visited[start] = True
-    while len(queue) != 0:
-        tmpnode = queue.popleft()
-        for neighbour in graph[tmpnode]:
-            if visited[neighbour] == False:
-                path.append(neighbour)
-                queue.append(neighbour)
+    queue.append(start)
+    path.append(start)
+    while queue:
+        node = queue.popleft()
+        for neighbour in graph[node]:
+            if not visited[neighbour]:
                 visited[neighbour] = True
+                queue.append(neighbour)
+                path.append(neighbour)
+
     return path
 
-graph = defaultdict(list)
-v,e = map(int,input().split())
-for i in range(e):
-    u,v = map(str,input().split())
-    graph[u].append(v)
-    graph[v].append(u)
 
-start = 'A'
-path = []
-visited = defaultdict(bool)
-traversedpath = bfs(graph,start,visited,path)
-print(traversedpath)
+graph = defaultdict(list)
+
+v, e = map(int, input("Enter the number of nodes and edges: ").split())
+print("\nEnter the edges (Adjacent Nodes):")
+for i in range(e):
+    u, w = input(f"Edge {i+1} (u v): ").split()
+    graph[u].append(w)
+    graph[w].append(u)
+print("\nAdjacency List:")
+for node in graph:
+    print(node, "->", graph[node])
+start = input("\nEnter the start node for BFS: ")
+if start not in graph:
+    print("Invalid start node!")
+else:
+    visited = defaultdict(bool)
+    path = []
+
+ traversedpath = bfs(graph, start, visited, path)
+ print("\nBFS Traversal:", " -> ".join(traversedpath))
 
 ```
 <h3>Sample Input</h3>
